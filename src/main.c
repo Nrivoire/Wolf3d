@@ -6,7 +6,7 @@
 /*   By: nrivoire <nrivoire@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/08 11:09:08 by nrivoire     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/08 11:17:13 by nrivoire    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/10/08 11:28:47 by nrivoire    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -52,6 +52,8 @@ void			refresh_display(t_env *v)
 	}
 }
 
+
+
 int     main(int av, char **ac)
 {
     t_env		*v;
@@ -63,6 +65,6 @@ int     main(int av, char **ac)
     v->mlx->mlx_ptr = mlx_init();
 	v->mlx->win_ptr = mlx_new_window(v->mlx->mlx_ptr, WIDTH, HEIGHT, "wolf3d");
     ft_create_img(v->mlx->mlx_ptr, &v->mlx->img, WIDTH, HEIGHT);
-    make_mlx_hook(v);
+    mlx_loop(v->mlx->mlx_ptr);
     return (0);
 }

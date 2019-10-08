@@ -6,7 +6,7 @@
 #    By: nrivoire <nrivoire@student.le-101.fr>      +:+   +:    +:    +:+      #
 #                                                  #+#   #+    #+    #+#       #
 #    Created: 2019/06/14 18:19:22 by nrivoire     #+#   ##    ##    #+#        #
-#    Updated: 2019/10/08 11:12:46 by nrivoire    ###    #+. /#+    ###.fr      #
+#    Updated: 2019/10/08 11:23:47 by nrivoire    ###    #+. /#+    ###.fr      #
 #                                                          /                   #
 #                                                         /                    #
 # **************************************************************************** #
@@ -44,7 +44,7 @@ MINILIBX = -I includes -I minilibx_macos -L minilibx_macos -lmlx -framework Open
 
 #	Compiler
 CC = clang
-CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
+CFLAGS = -Wall -Wextra -g3 -fsanitize=address
 
 ################
 ##   COLORS   ##

@@ -6,12 +6,12 @@
 /*   By: nrivoire <nrivoire@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/07/29 07:01:21 by nrivoire     #+#   ##    ##    #+#       */
-/*   Updated: 2019/08/21 15:18:13 by nrivoire    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/10/08 11:24:06 by nrivoire    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
-#include "fractol.h"
+#include "wolf3d.h"
 
 void	ft_create_img(void *ptr, t_mlx_img *img, int w, int h)
 {

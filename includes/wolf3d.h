@@ -6,7 +6,7 @@
 /*   By: nrivoire <nrivoire@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/07/29 04:56:43 by nrivoire     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/08 11:14:45 by nrivoire    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/10/08 11:30:07 by nrivoire    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -112,12 +112,18 @@ typedef struct		s_env
 }					t_env;
 
 /*-----------------------------NECESSARY---------------------------------*/
+/*--main--*/
 void				free_env(t_env *v);
 void				ft_error(char *str);
 void				ft_create_img(void *ptr, t_mlx_img *img, int w, int h);
 void				ft_pixel_put(t_mlx_img img, int x, int y, int color);
 void				refresh_display(t_env *v);
 
+/*--event--*/
+int					red_cross(t_env *v);
+int					key_press(int keycode, t_env *v);
+int					key_release(int keycode, t_env *v);
+int					button_event(int button, int x, int y, t_env *v);
 /*-----------------------------WOLF3D------------------------------------*/
 
 #endif

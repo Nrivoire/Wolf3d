@@ -1,21 +1,40 @@
 /* ************************************************************************** */
 /*                                                          LE - /            */
 /*                                                              /             */
-/*   ft_pixel_put.c                                   .::    .:/ .      .::   */
+/*   key_event.c                                      .::    .:/ .      .::   */
 /*                                                 +:+:+   +:    +:  +:+:+    */
 /*   By: nrivoire <nrivoire@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
-/*   Created: 2019/07/29 07:02:23 by nrivoire     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/08 11:24:13 by nrivoire    ###    #+. /#+    ###.fr     */
+/*   Created: 2019/10/08 11:26:57 by nrivoire     #+#   ##    ##    #+#       */
+/*   Updated: 2019/10/08 11:27:23 by nrivoire    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
-void	ft_pixel_put(t_mlx_img img, int x, int y, int color)
+int				red_cross(t_env *v)
 {
-	if (x < 0 || y < 0 || x >= img.width || y >= img.height)
-		return ;
-	img.img[y * img.width + x] = color;
+	free_env(v);
+	exit(0);
+	return (0);
+}
+
+int				key_press(int keycode, t_env *v)
+{
+	if (keycode == ESC)
+	{
+		free_env(v);
+		exit(0);
+	}
+	if (keycode)
+		v->key[keycode] = 1;
+	return (0);
+}
+
+int				key_release(int keycode, t_env *v)
+{
+	if (keycode)
+		v->key[keycode] = 0;
+	return (0);
 }
