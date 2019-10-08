@@ -6,7 +6,7 @@
 /*   By: nrivoire <nrivoire@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/08 11:09:08 by nrivoire     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/08 11:28:47 by nrivoire    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/10/08 14:43:13 by nrivoire    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -52,14 +52,17 @@ void			refresh_display(t_env *v)
 	}
 }
 
-
-
 int     main(int av, char **ac)
 {
     t_env		*v;
+	int			fd;
 
+	fd = -1;
+	if (av != 2 || (fd = open(ac[1], O_RDONLY)) < 0)
+		ft_error("usage: ./wolf3d map");
 	if (!(v = ft_memalloc(sizeof(t_env))))
 		ft_error("struct t_env ft_memalloc error");
+	make_map(v, fd);
 	if (!(v->mlx = ft_memalloc(sizeof(t_mlx))))
 		ft_error("struct t_mlx ft_memalloc error");
     v->mlx->mlx_ptr = mlx_init();

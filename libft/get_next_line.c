@@ -6,7 +6,7 @@
 /*   By: nrivoire <nrivoire@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/11/27 13:27:22 by nrivoire     #+#   ##    ##    #+#       */
-/*   Updated: 2019/08/24 18:44:53 by nrivoire    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/10/08 14:41:32 by nrivoire    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -58,7 +58,7 @@ static int			ft_return(char *line, int ret)
 	if (ret == -1)
 	{
 		free(&line);
-		ft_error("usage : ./fdf map_sample.fdf");
+		ft_error("get_next_line error");
 		return (-1);
 	}
 	return (0);
@@ -72,7 +72,7 @@ int					get_next_line(const int fd, char **line)
 
 	if (fd < 0 || line == NULL || BUFF_SIZE < 1 || read(fd, buff, 0) == -1)
 	{
-		ft_error("usage : ./fdf map_sample.fdf");
+		ft_error("get_next_line error");
 		return (-1);
 	}
 	*line = ft_strnew(BUFF_SIZE);

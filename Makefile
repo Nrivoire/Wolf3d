@@ -6,7 +6,7 @@
 #    By: nrivoire <nrivoire@student.le-101.fr>      +:+   +:    +:    +:+      #
 #                                                  #+#   #+    #+    #+#       #
 #    Created: 2019/06/14 18:19:22 by nrivoire     #+#   ##    ##    #+#        #
-#    Updated: 2019/10/08 11:23:47 by nrivoire    ###    #+. /#+    ###.fr      #
+#    Updated: 2019/10/08 14:27:28 by nrivoire    ###    #+. /#+    ###.fr      #
 #                                                          /                   #
 #                                                         /                    #
 # **************************************************************************** #
@@ -22,7 +22,7 @@ NAME = wolf3d
 # SRC_SUP = {dossiers dans src qui seront separe par une virgule}
 SRC_SUP = my_mlx
 SRC_PATH = src
-SRC_NAME = main.c\
+SRC_NAME = main.c wolf3d_parsing.c\
 		   my_mlx/ft_create_img.c\
 		   my_mlx/ft_pixel_put.c\
 		   

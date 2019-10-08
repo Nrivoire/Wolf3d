@@ -6,7 +6,7 @@
 /*   By: nrivoire <nrivoire@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/07/29 04:56:43 by nrivoire     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/08 11:30:07 by nrivoire    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/10/08 14:12:53 by nrivoire    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -15,7 +15,7 @@
 # define WOLF3D_H
 
 # define WIDTH 1000
-# define HEIGHT 1000
+# define HEIGHT 700
 # include "keys.h"
 # include "../libft/libft.h"
 # include "../minilibx_macos/mlx.h"
@@ -23,6 +23,10 @@
 # include <math.h>
 # include <stdlib.h>
 # include <fcntl.h>
+
+
+#include <stdio.h>
+
 
 # define KEYPRESS					2
 # define KEYRELEASE					3
@@ -104,8 +108,15 @@ typedef struct		s_mlx
 	t_mlx_img		img;
 }					t_mlx;
 
+typedef struct		s_lst
+{
+	char			*line;
+	struct s_lst	*next;
+}					t_lst;
+
 typedef struct		s_env
 {
+	int				**map;
 	int				key[269];
 	t_mlx			*mlx;
 	t_mlx_img		*img;
@@ -125,5 +136,6 @@ int					key_press(int keycode, t_env *v);
 int					key_release(int keycode, t_env *v);
 int					button_event(int button, int x, int y, t_env *v);
 /*-----------------------------WOLF3D------------------------------------*/
+void				make_map(t_env *v, int fd);
 
 #endif
