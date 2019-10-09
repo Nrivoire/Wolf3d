@@ -6,7 +6,7 @@
 /*   By: nrivoire <nrivoire@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/07/29 04:56:43 by nrivoire     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/08 14:12:53 by nrivoire    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/10/09 13:31:59 by nrivoire    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -116,6 +116,8 @@ typedef struct		s_lst
 
 typedef struct		s_env
 {
+	int				row;
+	int				col;
 	int				**map;
 	int				key[269];
 	t_mlx			*mlx;
