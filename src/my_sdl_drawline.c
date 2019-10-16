@@ -6,7 +6,7 @@
 /*   By: nrivoire <nrivoire@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/15 13:25:36 by nrivoire     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/15 13:37:57 by nrivoire    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/10/15 17:34:24 by tprzybyl    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -24,16 +24,16 @@ t_rgb			make_rgb(int r, int g, int b, int a)
 	return (content);
 }
 
-t_spot			make_spot(int x, int y)
+t_ixy			make_spot(int x, int y)
 {
-	t_spot		content;
+	t_ixy		content;
 
 	content.x = x;
 	content.y = y;
 	return (content);
 }
 
-t_bressen		init_bresen(t_spot m1, t_spot m2)
+t_bressen		init_bresen(t_ixy m1, t_ixy m2)
 {
 	t_bressen	b;
 
@@ -45,7 +45,7 @@ t_bressen		init_bresen(t_spot m1, t_spot m2)
 	return (b);
 }
 
-void			my_sdl_drawline(t_spot m1, t_spot m2, t_rgb color, t_env *v)
+void			my_sdl_drawline(t_ixy m1, t_ixy m2, t_rgb color, t_env *v)
 {
 	t_bressen	b;
 

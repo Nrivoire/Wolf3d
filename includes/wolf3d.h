@@ -6,7 +6,7 @@
 /*   By: nrivoire <nrivoire@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/07/29 04:56:43 by nrivoire     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/15 13:38:23 by nrivoire    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/10/15 19:46:11 by tprzybyl    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -16,6 +16,8 @@
 
 # define WIDTH 1000
 # define HEIGHT 700
+# define TEXWIDTH 128
+# define FIELDOFVIEW 70
 # include "../libft/libft.h"
 # include <unistd.h>
 # include <math.h>
@@ -31,11 +33,12 @@
 
 #include <stdio.h>
 
-typedef struct		s_lst
+typedef struct		s_tex
 {
-	char			*line;
-	struct s_lst	*next;
-}					t_lst;
+	int				x;
+	int				y;
+	int				hit;
+}					t_tex;
 
 typedef struct		s_ixy
 {
@@ -51,12 +54,15 @@ typedef struct		s_xy
 
 typedef struct		s_calc
 {
+	int				x;
+	int				side;
 	t_ixy			step;
 	t_xy			sidedist;
 	t_xy			deltadist;
 	t_ixy			map;
 	t_xy			raydir;
 }					t_calc;
+
 
 typedef struct		s_pos
 {
@@ -68,12 +74,6 @@ typedef struct		s_pos
 }					t_pos;
 
 /*-----------------------------DRAWLINE-------------------------------*/
-typedef struct		s_spot
-{
-	int				x;
-	int				y;
-}					t_spot;
-
 typedef struct		s_rgb
 {
 	int				r;
@@ -92,13 +92,18 @@ typedef struct		s_bressen
 	int				e2;
 }					t_bressen;
 /*-----------------------------ENVIRONNEMENT----------------------------*/
+typedef struct		s_lst
+{
+	char			*line;
+	struct s_lst	*next;
+}					t_lst;
 
 typedef struct		s_env
 {
 	SDL_Window		*win;
 	SDL_Renderer	*ren;
-	SDL_Surface		*sur;
-	t_pos			*pos;
+	SDL_Surface		*sur[16];
+	t_pos			pos;
 	int				row;
 	int				col;
 	int				**map;
@@ -108,11 +113,13 @@ typedef struct		s_env
 /*--main--*/
 void				free_env(t_env *v);
 void				ft_error(char *str);
+//void				ft_create_img(void *ptr, t_mlx_img *img, int w, int h);
+//void				ft_pixel_put(t_mlx_img img, int x, int y, int color);
 
 /*--draw--*/
-void				my_sdl_drawline(t_spot m1, t_spot m2, t_rgb color, t_env *v);
+void				my_sdl_drawline(t_ixy m1, t_ixy m2, t_rgb color, t_env *v);
 t_rgb				make_rgb(int r, int g, int b, int a);
-t_spot				make_spot(int x, int y);
+t_ixy				make_spot(int x, int y);
 
 /*--event--*/
 int					red_cross(t_env *v);
@@ -120,6 +127,10 @@ int					key_press(int keycode, t_env *v);
 int					key_release(int keycode, t_env *v);
 int					button_event(int button, int x, int y, t_env *v);
 /*-----------------------------WOLF3D------------------------------------*/
+/*--parsing--*/
 void				make_map(t_env *v, int fd);
+
+/*--draw--*/
+void				drawtexedline(t_xy *src, t_xy *dst, t_env *v, t_tex *tex);
 
 #endif

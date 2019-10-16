@@ -6,12 +6,12 @@
 /*   By: nrivoire <nrivoire@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/08 13:56:01 by nrivoire     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/15 14:15:41 by nrivoire    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/10/16 16:36:16 by nrivoire    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
-#include "wolf3d.h"
+#include "../includes/wolf3d.h"
 
 void		add_elem(t_lst **elem, char *line)
 {
@@ -110,22 +110,41 @@ void		make_map(t_env *v, int fd)
 
 	map_r = -1;
 	lst = wolf3d_parsing(v, fd);
-	if (!(v->map = malloc(sizeof(int*) * v->row + 1)))
+	v->row = v->row + 1;
+	//v->col = v->col + 1;
+	if (!(v->map = malloc(sizeof(int*) * (v->row + 1))))
 		return ;
-	while (lst != NULL && ++map_r <= v->row)
+	while (lst != NULL && ++map_r < v->row)
 	{
 		map_c = -1;
 		i = -1;
-		if (!(s = ft_strsplit(lst->line, ' ')))
-			ft_error("Error");
+		if (map_r > 0)
+		{
+			if (!(s = ft_strsplit(lst->line, ' ')))
+				ft_error("Error");
+		}
 		while (++map_c < v->col)
 		{
 			if (!(v->map[map_r] = malloc(sizeof(int) * (v->col + 1))))
 				return ;
-			v->map[map_r][map_c] = ft_atoi(s[++i]);
-			//printf("%3d", v->map[map_r][map_c]);
+			if (map_r == 0)
+				v->map[map_r][map_c] = 1;
+			else if (ft_atoi(s[++i]) < 0)
+			{
+				if (v->pos.pos.y != -1 && v->pos.pos.y != -1)
+					ft_error("There should be only one -1 in the map.");
+				v->pos.pos.y = map_r + 0.5;
+				v->pos.pos.x = map_c + 0.5;
+				v->map[map_r][map_c] = 0;
+			}
+			else
+			{
+				//printf("-%d-", map_r);
+				v->map[map_r][map_c] = ft_atoi(s[i]);
+			}
+			printf("%3d", v->map[map_r][map_c]);
 		}
-		//printf("\n");
+		printf("  i = %d\n", i);
 		lst = lst->next;
 	}
 }
