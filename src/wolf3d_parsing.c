@@ -6,7 +6,7 @@
 /*   By: nrivoire <nrivoire@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/08 13:56:01 by nrivoire     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/16 16:36:16 by nrivoire    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/10/17 19:32:49 by tprzybyl    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -75,11 +75,11 @@ void		check_map(t_env *v, char *line)
 			if (line[i] == '-' && line[i + 1] == '1')
 				n++;
 			if (n > 1)
-				ft_error("The map is not valid.");
+				ft_error("A - The map is not valid.");
 			i++;
 		}
 		else
-			ft_error("The map is not valid.");
+			ft_error("B - The map is not valid.");
 	}
 	if (v->col == 0)
 		v->col = ft_count_map(line, ' ');
@@ -100,6 +100,16 @@ t_lst		*wolf3d_parsing(t_env *v, int fd)
 	return (lst);
 }
 
+void		free_tab(char **tab, int n)
+{
+	int		i;
+
+	i = -1;
+	while (++i < n)
+		ft_strdel(&tab[i]);
+	free(tab);
+}
+
 void		make_map(t_env *v, int fd)
 {
 	t_lst	*lst;
@@ -108,28 +118,23 @@ void		make_map(t_env *v, int fd)
 	int		i;
 	char	**s;
 
-	map_r = -1;
+	map_r = 0;
 	lst = wolf3d_parsing(v, fd);
-	v->row = v->row + 1;
-	//v->col = v->col + 1;
-	if (!(v->map = malloc(sizeof(int*) * (v->row + 1))))
+	if (!(v->map = malloc(sizeof(int *) * (v->row + 2))))
 		return ;
-	while (lst != NULL && ++map_r < v->row)
+	i = -1;
+	while (++i < v->row + 2)
+		if (!(v->map[i] = malloc(sizeof(int) * (v->col + 2))))
+			return ;
+	while (lst != NULL && ++map_r < v->row + 1)
 	{
-		map_c = -1;
+		map_c = 0;
 		i = -1;
-		if (map_r > 0)
+		if (!(s = ft_strsplit(lst->line, ' ')))
+			ft_error("Error");
+		while (++map_c < v->col + 1)
 		{
-			if (!(s = ft_strsplit(lst->line, ' ')))
-				ft_error("Error");
-		}
-		while (++map_c < v->col)
-		{
-			if (!(v->map[map_r] = malloc(sizeof(int) * (v->col + 1))))
-				return ;
-			if (map_r == 0)
-				v->map[map_r][map_c] = 1;
-			else if (ft_atoi(s[++i]) < 0)
+			if (ft_atoi(s[++i]) < 0)
 			{
 				if (v->pos.pos.y != -1 && v->pos.pos.y != -1)
 					ft_error("There should be only one -1 in the map.");
@@ -138,13 +143,33 @@ void		make_map(t_env *v, int fd)
 				v->map[map_r][map_c] = 0;
 			}
 			else
-			{
-				//printf("-%d-", map_r);
 				v->map[map_r][map_c] = ft_atoi(s[i]);
-			}
-			printf("%3d", v->map[map_r][map_c]);
 		}
-		printf("  i = %d\n", i);
+		free_tab(s, v->col);
 		lst = lst->next;
 	}
+	i = -1;
+	while (++i < v->col + 2)
+	{
+		v->map[0][i] = 1;
+		v->map[v->row + 1][i] = 1;
+	}
+	i = -1;
+	while (++i < v->row + 2)
+	{
+		v->map[i][0] = 1;
+		v->map[i][v->col + 1] = 1;
+	}
+
+	//i = -1;
+	//register int j;
+	//while (++i < v->row + 2)
+	//{
+	//	j = -1;
+	//	while (++j < v->col + 2)
+	//	{
+	//		printf("%d ", v->map[i][j]);
+	//	}
+	//	printf("\n");
+	//}
 }

@@ -6,7 +6,7 @@
 /*   By: nrivoire <nrivoire@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/07/29 04:56:43 by nrivoire     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/15 19:46:11 by tprzybyl    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/10/18 13:47:33 by nrivoire    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -56,19 +56,19 @@ typedef struct		s_calc
 {
 	int				x;
 	int				side;
+	double			ang;
 	t_ixy			step;
 	t_xy			sidedist;
 	t_xy			deltadist;
 	t_ixy			map;
-	t_xy			raydir;
+	t_xy			dir;
 }					t_calc;
-
 
 typedef struct		s_pos
 {
 	t_xy			pos;
-	t_xy			dir;
-	t_xy			plane;
+	int				angle;
+	int				fov;
 	int				time;
 	int				oldtime;
 }					t_pos;
@@ -104,6 +104,7 @@ typedef struct		s_env
 	SDL_Renderer	*ren;
 	SDL_Surface		*sur[16];
 	t_pos			pos;
+	double			rad[360];
 	int				row;
 	int				col;
 	int				**map;
@@ -113,10 +114,12 @@ typedef struct		s_env
 /*--main--*/
 void				free_env(t_env *v);
 void				ft_error(char *str);
+void				assigntextures(t_env *v);
 //void				ft_create_img(void *ptr, t_mlx_img *img, int w, int h);
 //void				ft_pixel_put(t_mlx_img img, int x, int y, int color);
 
 /*--draw--*/
+void				drawtexedline(t_xy src, t_xy dst, t_env *v, t_tex tex);
 void				my_sdl_drawline(t_ixy m1, t_ixy m2, t_rgb color, t_env *v);
 t_rgb				make_rgb(int r, int g, int b, int a);
 t_ixy				make_spot(int x, int y);
@@ -130,7 +133,12 @@ int					button_event(int button, int x, int y, t_env *v);
 /*--parsing--*/
 void				make_map(t_env *v, int fd);
 
+/*--calculs--*/
+void				render(t_env *v);
+void				make_rad(t_env *v);
+void				render(t_env *v);
+
 /*--draw--*/
-void				drawtexedline(t_xy *src, t_xy *dst, t_env *v, t_tex *tex);
+void				drawtexedline(t_xy src, t_xy dst, t_env *v, t_tex tex);
 
 #endif

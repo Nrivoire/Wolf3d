@@ -6,21 +6,39 @@
 /*   By: nrivoire <nrivoire@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/08 11:09:08 by nrivoire     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/15 19:47:08 by tprzybyl    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/10/18 14:32:21 by nrivoire    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #include "../includes/wolf3d.h"
 
+void			raycasting(t_env *v)
+{
+	int				fov = 60;
+	int				win_half = WIDTH / 2;
+	int				distance_mid_cam = win_half / tan(v->rad[30]);
+	int				distance_edge_cam = win_half / cos(v->rad[60]);
+
+	printf("%d %d %d\n", fov, distance_mid_cam, distance_edge_cam);
+}
+
+void			make_rad(t_env *v)
+{
+	int			i;
+
+	i = -1;
+	while (++i <= 360)
+		v->rad[i] = i * (M_PI / 180);
+}
+
 void			init(t_env *v)
 {
-	v->pos.dir.x = 0;
-	v->pos.dir.y = -1;
-	v->pos.plane.x = -(FIELDOFVIEW / 100);
-	v->pos.plane.y = 0;
-	v->pos.time = 0;
-	v->pos.oldtime = 0;
+	make_rad(v);
+	v->col = 0;
+	v->row = 0;
+	v->pos.pos.y = -1;
+	v->pos.pos.x = -1;
 }
 
 void			background(t_env *v)
@@ -35,7 +53,7 @@ void			background(t_env *v)
 		while (++land <= WIDTH)
 		{
 			SDL_RenderDrawPoint(v->ren, land, sky);
-			SDL_SetRenderDrawColor(v->ren, 135, 206, 235, 255);
+			SDL_SetRenderDrawColor(v->ren, 140, 140, 140, 255);
 		}
 	}
 	sky = HEIGHT / 2;
@@ -45,12 +63,57 @@ void			background(t_env *v)
 		while (++land <= WIDTH)
 		{
 			SDL_RenderDrawPoint(v->ren, land, sky);
-			SDL_SetRenderDrawColor(v->ren, 210, 180, 140, 255);
+			SDL_SetRenderDrawColor(v->ren, 179, 179, 179, 255);
 		}
 	}
 }
 
-int		main(int av, char **ac)
+void			movement(t_env *v, int *ix, int *iy, int *jx, int *jy)
+{
+	const Uint8 *key = SDL_GetKeyboardState(NULL);
+	if (key[SDL_SCANCODE_DOWN])
+	{
+		//SDL_RenderClear(v->ren);
+		//background(v);
+		SDL_SetRenderDrawColor(v->ren, 0, 0, 0, 255);
+		SDL_RenderClear(v->ren);
+		*jy += 10;
+		*iy += 10;
+		my_sdl_drawline(make_spot(*ix, *iy), make_spot(*jx, *jy), make_rgb(255, 255, 255, 225), v);
+	}
+	if (key[SDL_SCANCODE_UP])
+	{
+		//SDL_RenderClear(v->ren);
+		//background(v);
+		SDL_SetRenderDrawColor(v->ren, 0, 0, 0, 255);
+		SDL_RenderClear(v->ren);
+		*jy -= 10;
+		*iy -= 10;
+		my_sdl_drawline(make_spot(*ix, *iy), make_spot(*jx, *jy), make_rgb(255, 255, 255, 225), v);
+	}
+	if (key[SDL_SCANCODE_RIGHT])
+	{
+		//SDL_RenderClear(v->ren);
+		//background(v);
+		SDL_SetRenderDrawColor(v->ren, 0, 0, 0, 255);
+		SDL_RenderClear(v->ren);
+		*jx += 10;
+		*ix += 10;
+		my_sdl_drawline(make_spot(*ix, *iy), make_spot(*jx, *jy), make_rgb(255, 255, 255, 225), v);
+	}
+	if (key[SDL_SCANCODE_LEFT])
+	{
+		//SDL_RenderClear(v->ren);
+		//background(v);
+		SDL_SetRenderDrawColor(v->ren, 0, 0, 0, 255);
+		SDL_RenderClear(v->ren);
+		*jx -= 10;
+		*ix -= 10;
+		my_sdl_drawline(make_spot(*ix, *iy), make_spot(*jx, *jy), make_rgb(255, 255, 255, 225), v);
+	}
+}
+
+int				main(int av, char **ac)
 {
 	t_env		*v;
 	int			fd;
@@ -62,10 +125,6 @@ int		main(int av, char **ac)
 	if (!(v = ft_memalloc(sizeof(t_env))))
 		ft_error("struct t_env ft_memalloc error");
 	init(v);
-	v->col = 0;
-	v->row = 0;
-	v->pos.pos.y = -1;
-	v->pos.pos.x = -1;
 	make_map(v, fd);
 
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
@@ -76,31 +135,27 @@ int		main(int av, char **ac)
 	v->ren = SDL_CreateRenderer(v->win, -1, SDL_RENDERER_SOFTWARE);
 	if (v->ren == NULL)
 		ft_error("Could not create a renderer");
-	int		ix;
-	int		jx;
-	int		iy;
-	int		jy;
-	jx = 200;
-	ix = 10;
-	iy = 10;
-	jy = 200;
+
+	raycasting(v);
+
+	int			ix = 200;
+	int			iy = 100;
+	int			jx = 500;
+	int			jy = 400;
 	while (1)
 	{
-		//const Uint8 *key = SDL_GetKeyboardState(NULL);
-		if (SDL_PollEvent(&event) && event.type == SDL_QUIT)
-			break;
-		background(v);
-		//if (key[SDL_SCANCODE_DOWN])
-		//	my_sdl_drawline(make_spot(ix, ++iy), make_spot(jx, ++jy), make_rgb(255, 255, 255, 225), v);
-		//if (key[SDL_SCANCODE_UP])
-		//	my_sdl_drawline(make_spot(ix, --iy), make_spot(jx, --jy), make_rgb(255, 255, 255, 225), v);
-		//if (key[SDL_SCANCODE_RIGHT])
-		//	my_sdl_drawline(make_spot(++ix, iy), make_spot(++jx, jy), make_rgb(255, 255, 255, 225), v);
-		//if (key[SDL_SCANCODE_LEFT])
-		//	my_sdl_drawline(make_spot(--ix, iy), make_spot(--jx, jy), make_rgb(255, 255, 255, 225), v);	
+		//background(v);
 		SDL_SetRenderDrawColor(v->ren, 0, 0, 0, 255);
-		SDL_RenderPresent(v->ren);
-		SDL_RenderClear(v->ren);
+		my_sdl_drawline(make_spot(ix, iy), make_spot(jx, jy), make_rgb(255, 255, 255, 225), v);
+		if (SDL_PollEvent(&event))
+		{
+			const Uint8 *key = SDL_GetKeyboardState(NULL);
+			if (event.type == SDL_QUIT)
+				break;
+			if (key)
+				movement(v, &ix, &iy, &jx, &jy);
+			SDL_RenderPresent(v->ren);
+		}
 	}
 	SDL_DestroyRenderer(v->ren);
 	SDL_DestroyWindow(v->win);

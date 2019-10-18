@@ -6,7 +6,7 @@
 #    By: nrivoire <nrivoire@student.le-101.fr>      +:+   +:    +:    +:+      #
 #                                                  #+#   #+    #+    #+#       #
 #    Created: 2019/06/14 18:19:22 by nrivoire     #+#   ##    ##    #+#        #
-#    Updated: 2019/10/15 13:38:57 by nrivoire    ###    #+. /#+    ###.fr      #
+#    Updated: 2019/10/18 13:28:21 by nrivoire    ###    #+. /#+    ###.fr      #
 #                                                          /                   #
 #                                                         /                    #
 # **************************************************************************** #
@@ -22,9 +22,7 @@ NAME = wolf3d
 # SRC_SUP = {dossiers dans src qui seront separe par une virgule}
 SRC_SUP = my_sdl
 SRC_PATH = src
-SRC_NAME = main.c wolf3d_parsing.c\
-		   my_sdl_drawline.c\
-		   \
+SRC_NAME = main.c wolf3d_parsing.c my_sdl_drawline.c\
 		   
 
 #	Objects
@@ -38,13 +36,13 @@ INC_NAME = wolf3d.h
 INC = $(addprefix $(INC_PATH)/,$(INC_NAME))
 
 CPPFLAGS = -I $(INC_PATH)
-LDFLAGS = -O3 -lpthread -L libft #-g3 -fsanitize=address
+LDFLAGS = -O3 -lpthread -L libft -g3 
 LDLIBS = -lft
 SDL =  -lft -F /Library/Frameworks/ -framework SDL2
 
 #	Compiler
 CC = clang
-CFLAGS = -Wall -Wextra #-g3 -fsanitize=address
+CFLAGS = -Wall -Wextra -g3 
 
 ################
 ##   COLORS   ##
