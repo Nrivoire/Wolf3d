@@ -6,7 +6,7 @@
 #    By: nrivoire <nrivoire@student.le-101.fr>      +:+   +:    +:    +:+      #
 #                                                  #+#   #+    #+    #+#       #
 #    Created: 2019/06/14 18:19:22 by nrivoire     #+#   ##    ##    #+#        #
-#    Updated: 2019/10/18 13:28:21 by nrivoire    ###    #+. /#+    ###.fr      #
+#    Updated: 2019/10/23 13:45:57 by nrivoire    ###    #+. /#+    ###.fr      #
 #                                                          /                   #
 #                                                         /                    #
 # **************************************************************************** #
@@ -22,7 +22,10 @@ NAME = wolf3d
 # SRC_SUP = {dossiers dans src qui seront separe par une virgule}
 SRC_SUP = my_sdl
 SRC_PATH = src
-SRC_NAME = main.c wolf3d_parsing.c my_sdl_drawline.c\
+SRC_NAME =  main.c wolf3d_parsing.c make_map.c wolf3d_drawline.c wolf3d_renderer.c \
+		    wolf3d_textures.c \
+			my_sdl_drawline.c\
+			mouse_event.c key_event.c display.c\
 		   
 
 #	Objects

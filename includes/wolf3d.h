@@ -6,7 +6,7 @@
 /*   By: nrivoire <nrivoire@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/07/29 04:56:43 by nrivoire     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/18 13:47:33 by nrivoire    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/10/23 13:50:46 by nrivoire    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -17,13 +17,12 @@
 # define WIDTH 1000
 # define HEIGHT 700
 # define TEXWIDTH 128
-# define FIELDOFVIEW 70
+# define FIELDOFVIEW 45
 # include "../libft/libft.h"
 # include <unistd.h>
 # include <math.h>
 # include <stdlib.h>
 # include <fcntl.h>
-
 # include <SDL2/SDL.h>
 # include <SDL2/SDL_surface.h>
 # include <SDL2/SDL_video.h>
@@ -108,6 +107,11 @@ typedef struct		s_env
 	int				row;
 	int				col;
 	int				**map;
+	double			rot_speed;
+	int				bool_cursor;
+	int				bool_cam;
+	int				inc;
+	t_lst			*lst;
 }					t_env;
 
 /*-----------------------------NECESSARY---------------------------------*/
@@ -115,8 +119,6 @@ typedef struct		s_env
 void				free_env(t_env *v);
 void				ft_error(char *str);
 void				assigntextures(t_env *v);
-//void				ft_create_img(void *ptr, t_mlx_img *img, int w, int h);
-//void				ft_pixel_put(t_mlx_img img, int x, int y, int color);
 
 /*--draw--*/
 void				drawtexedline(t_xy src, t_xy dst, t_env *v, t_tex tex);
@@ -125,13 +127,13 @@ t_rgb				make_rgb(int r, int g, int b, int a);
 t_ixy				make_spot(int x, int y);
 
 /*--event--*/
-int					red_cross(t_env *v);
-int					key_press(int keycode, t_env *v);
-int					key_release(int keycode, t_env *v);
-int					button_event(int button, int x, int y, t_env *v);
+void				mouse_button_event(SDL_Event event, t_env *v);
+void				mouse_motion_event(SDL_Event event, t_env *v);
+void				key_event(SDL_Event event, t_env *v);
 /*-----------------------------WOLF3D------------------------------------*/
 /*--parsing--*/
-void				make_map(t_env *v, int fd);
+t_lst				*wolf3d_parsing(t_env *v, int fd);
+void				map(t_env *v);
 
 /*--calculs--*/
 void				render(t_env *v);
@@ -140,5 +142,9 @@ void				render(t_env *v);
 
 /*--draw--*/
 void				drawtexedline(t_xy src, t_xy dst, t_env *v, t_tex tex);
+
+/*--display--*/
+void				display(t_env *v);
+void				background(t_env *v);
 
 #endif
