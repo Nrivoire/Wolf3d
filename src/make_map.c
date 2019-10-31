@@ -6,19 +6,12 @@
 /*   By: nrivoire <nrivoire@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/23 13:43:47 by nrivoire     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/23 13:53:29 by nrivoire    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/10/30 15:58:16 by nrivoire    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #include "../includes/wolf3d.h"
-
-void		lstdel(t_lst *lst)
-{
-	if (lst->next)
-		lstdel(lst->next);
-	free(lst);
-}
 
 void		free_tab(char **tab, int n)
 {
@@ -44,8 +37,19 @@ void		make_map(int map_c, int map_r, char **s, t_env *v)
 		v->map[map_r][map_c] = ft_atoi(s[v->inc]);
 }
 
-void		outline(t_env *v)
+void		lstdel(t_lst *lst)
 {
+	if (lst->next)
+		lstdel(lst->next);
+	ft_strdel(&lst->line);
+	free(lst);
+}
+
+void		outline(t_env *v, t_lst *begin)
+{
+	if (v->pos.pos.y == -1 && v->pos.pos.y == -1)
+		ft_error("There should be at least one -1 in the map.");
+	lstdel(begin);
 	v->inc = -1;
 	while (++v->inc < v->col + 2)
 	{
@@ -85,17 +89,5 @@ void		map(t_env *v)
 		free_tab(s, v->col);
 		v->lst = v->lst->next;
 	}
-	lstdel(begin);
-	outline(v);
-	// v->inc = -1;
-	// register int j;
-	// while (++v->inc < v->row + 2)
-	// {
-	// 	j = -1;
-	// 	while (++j < v->col + 2)
-	// 	{
-	// 		printf("%d ", v->map[v->inc][j]);
-	// 	}
-	// 	printf("\n");
-	// }
+	outline(v, begin);
 }

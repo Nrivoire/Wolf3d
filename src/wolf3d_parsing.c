@@ -6,32 +6,12 @@
 /*   By: nrivoire <nrivoire@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/08 13:56:01 by nrivoire     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/23 13:52:48 by nrivoire    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/10/30 16:00:47 by nrivoire    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #include "../includes/wolf3d.h"
-
-void			add_elem(t_lst **elem, char *line)
-{
-	t_lst		*new;
-	t_lst		*tmp;
-
-	if (!(new = (t_lst *)malloc(sizeof(t_lst))))
-		ft_error("Error malloc lst");
-	new->line = line;
-	new->next = NULL;
-	if (*elem == NULL)
-		*elem = new;
-	else
-	{
-		tmp = *elem;
-		while (tmp->next)
-			tmp = tmp->next;
-		tmp->next = new;
-	}
-}
 
 static size_t	ft_count_map(char const *s, char c)
 {
@@ -54,29 +34,55 @@ static size_t	ft_count_map(char const *s, char c)
 void			check_map(t_env *v, char *line)
 {
 	int			i;
-	int			n;
 	int			nb_col;
 
 	i = 0;
-	n = 0;
 	nb_col = 0;
 	while (line[i] != '\0')
 	{
 		nb_col++;
-		if ((line[i] >= '0' && line[i] <= '9') || (line[i] == '-' \
-				&& line[i + 1] == '1') || line[i] == ' ')
-		{
-			if (line[i] == '-' && line[i + 1] == '1')
-				n++;
-			if (n > 1)
-				ft_error("The map is not valid.");
+		if ((line[i] >= '0' && line[i] <= '9') || \
+			(line[i] == '-' && line[i + 1] == '1') || line[i] == ' ')
 			i++;
-		}
 		else
 			ft_error("The map is not valid.");
 	}
 	if (v->col == 0)
 		v->col = ft_count_map(line, ' ');
+}
+
+t_lst			*ft_lst_new(char *line, int line_size)
+{
+	t_lst		*elem;
+
+	if (!(elem = (t_lst *)malloc(sizeof(t_lst))))
+		return (NULL);
+	if (line)
+	{
+		elem->line = ft_strnew(line_size);
+		ft_memcpy(elem->line, line, line_size);
+	}
+	else
+		elem->line = NULL;
+	elem->next = NULL;
+	return (elem);
+}
+
+void			add_elem(t_lst **elem, char *line, int line_size)
+{
+	t_lst		*new;
+	t_lst		*tmp;
+
+	new = ft_lst_new(line, line_size);
+	if (*elem == NULL)
+		*elem = new;
+	else
+	{
+		tmp = *elem;
+		while (tmp->next)
+			tmp = tmp->next;
+		tmp->next = new;
+	}
 }
 
 t_lst			*wolf3d_parsing(t_env *v, int fd)
@@ -89,7 +95,8 @@ t_lst			*wolf3d_parsing(t_env *v, int fd)
 	{
 		v->row++;
 		check_map(v, line);
-		add_elem(&lst, line);
+		add_elem(&lst, line, ft_strlen(line));
+		ft_strdel(&line);
 	}
 	return (lst);
 }

@@ -6,7 +6,7 @@
 /*   By: nrivoire <nrivoire@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/07/29 04:56:43 by nrivoire     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/23 13:50:46 by nrivoire    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/10/30 19:49:57 by tprzybyl    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -18,6 +18,10 @@
 # define HEIGHT 700
 # define TEXWIDTH 128
 # define FIELDOFVIEW 45
+# define ANGLE 105
+# define ROTSPEED 1
+# define MOVESPEED .1
+
 # include "../libft/libft.h"
 # include <unistd.h>
 # include <math.h>
@@ -53,14 +57,14 @@ typedef struct		s_xy
 
 typedef struct		s_calc
 {
-	int				x;
-	int				side;
-	double			ang;
-	t_ixy			step;
-	t_xy			sidedist;
-	t_xy			deltadist;
-	t_ixy			map;
-	t_xy			dir;
+	int				x;			//Correspond a la colonne dessinee
+	int				side;		//Pour savoir si on touche un mur en X ou en Y
+	double			ang;		//Angle d'un seul rayon en Rad
+	t_ixy			step;		//Savoir si on avance ou on recule en X et en Y
+	t_xy			sidedist;	//Distance entre nous et la premiere intersection en X et en Y
+	t_xy			deltadist;	// Distance entre deux points d'intersection en X et en Y
+	t_ixy			map;		// Coordonnees de la case qu'on verifie
+	t_xy			dir;		// Vecteur qui correspond a notre direction
 }					t_calc;
 
 typedef struct		s_pos
@@ -72,24 +76,6 @@ typedef struct		s_pos
 	int				oldtime;
 }					t_pos;
 
-/*-----------------------------DRAWLINE-------------------------------*/
-typedef struct		s_rgb
-{
-	int				r;
-	int				g;
-	int				b;
-	int				a;
-}					t_rgb;
-
-typedef struct		s_bressen
-{
-	int				dx;
-	int				dy;
-	int				sx;
-	int				sy;
-	int				err;
-	int				e2;
-}					t_bressen;
 /*-----------------------------ENVIRONNEMENT----------------------------*/
 typedef struct		s_lst
 {
@@ -101,14 +87,14 @@ typedef struct		s_env
 {
 	SDL_Window		*win;
 	SDL_Renderer	*ren;
-	SDL_Surface		*sur[16];
+	SDL_Surface		*sur[16][4];
 	t_pos			pos;
 	double			rad[360];
 	int				row;
 	int				col;
 	int				**map;
 	double			rot_speed;
-	int				bool_cursor;
+	double			movespeed;
 	int				bool_cam;
 	int				inc;
 	t_lst			*lst;
@@ -120,16 +106,10 @@ void				free_env(t_env *v);
 void				ft_error(char *str);
 void				assigntextures(t_env *v);
 
-/*--draw--*/
-void				drawtexedline(t_xy src, t_xy dst, t_env *v, t_tex tex);
-void				my_sdl_drawline(t_ixy m1, t_ixy m2, t_rgb color, t_env *v);
-t_rgb				make_rgb(int r, int g, int b, int a);
-t_ixy				make_spot(int x, int y);
-
 /*--event--*/
 void				mouse_button_event(SDL_Event event, t_env *v);
 void				mouse_motion_event(SDL_Event event, t_env *v);
-void				key_event(SDL_Event event, t_env *v);
+void				key_event(const Uint8 *keyboard_state, t_env *v);
 /*-----------------------------WOLF3D------------------------------------*/
 /*--parsing--*/
 t_lst				*wolf3d_parsing(t_env *v, int fd);

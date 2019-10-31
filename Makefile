@@ -6,7 +6,7 @@
 #    By: nrivoire <nrivoire@student.le-101.fr>      +:+   +:    +:    +:+      #
 #                                                  #+#   #+    #+    #+#       #
 #    Created: 2019/06/14 18:19:22 by nrivoire     #+#   ##    ##    #+#        #
-#    Updated: 2019/10/23 13:45:57 by nrivoire    ###    #+. /#+    ###.fr      #
+#    Updated: 2019/10/30 15:47:15 by nrivoire    ###    #+. /#+    ###.fr      #
 #                                                          /                   #
 #                                                         /                    #
 # **************************************************************************** #
@@ -24,7 +24,6 @@ SRC_SUP = my_sdl
 SRC_PATH = src
 SRC_NAME =  main.c wolf3d_parsing.c make_map.c wolf3d_drawline.c wolf3d_renderer.c \
 		    wolf3d_textures.c \
-			my_sdl_drawline.c\
 			mouse_event.c key_event.c display.c\
 		   
 
@@ -39,13 +38,13 @@ INC_NAME = wolf3d.h
 INC = $(addprefix $(INC_PATH)/,$(INC_NAME))
 
 CPPFLAGS = -I $(INC_PATH)
-LDFLAGS = -O3 -lpthread -L libft -g3 
+LDFLAGS = -O3 -lpthread -L libft -g3 #-fsanitize=address
 LDLIBS = -lft
 SDL =  -lft -F /Library/Frameworks/ -framework SDL2
 
 #	Compiler
 CC = clang
-CFLAGS = -Wall -Wextra -g3 
+CFLAGS = -Wall -Wextra -g3 #-fsanitize=address
 
 ################
 ##   COLORS   ##

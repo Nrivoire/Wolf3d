@@ -6,7 +6,7 @@
 /*   By: nrivoire <nrivoire@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/08 11:09:08 by nrivoire     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/23 13:53:42 by nrivoire    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/10/30 16:06:56 by tprzybyl    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -25,7 +25,9 @@ void			make_rad(t_env *v)
 void			init(t_env *v)
 {
 	v->pos.fov = FIELDOFVIEW;
-	v->pos.angle = 90;
+	v->pos.angle = ANGLE;
+	v->rot_speed = ROTSPEED;
+	v->movespeed = MOVESPEED;
 	v->pos.time = 0;
 	v->pos.oldtime = 0;
 	make_rad(v);
@@ -34,8 +36,6 @@ void			init(t_env *v)
 	v->row = 0;
 	v->pos.pos.y = -1;
 	v->pos.pos.x = -1;
-	v->rot_speed = 0.2;
-	v->bool_cursor = 1;
 	v->bool_cam = 1;
 	v->inc = -1;
 }

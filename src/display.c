@@ -6,7 +6,7 @@
 /*   By: nrivoire <nrivoire@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/23 13:08:55 by nrivoire     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/23 13:11:06 by nrivoire    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/10/30 15:59:32 by nrivoire    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -44,21 +44,23 @@ void			display(t_env *v)
 {
 	SDL_Event	event;
 
+	SDL_SetRelativeMouseMode(SDL_ENABLE);
 	while (1)
 	{
 		background(v);
 		if (SDL_PollEvent(&event))
 		{
-			if (event.type == SDL_QUIT || event.key.keysym.sym == SDLK_ESCAPE)
+			const Uint8 *keyboard_state = SDL_GetKeyboardState(NULL);
+			if (event.type == SDL_QUIT)
 				break;
 			if (event.type == SDL_KEYDOWN)
-				key_event(event, v);
+				key_event(keyboard_state, v);
 			if (event.type == SDL_MOUSEBUTTONDOWN)
 				mouse_button_event(event, v);
 			if (event.type == SDL_MOUSEMOTION)
 				mouse_motion_event(event, v);
-			SDL_SetRelativeMouseMode(v->bool_cursor);
 			SDL_WarpMouseInWindow(v->win, WIDTH / 2, HEIGHT / 2);
+			//printf("Pos %f/%f \n", v->pos.pos.x, v->pos.pos.y);
 			render(v);
 			SDL_RenderPresent(v->ren);
 		}

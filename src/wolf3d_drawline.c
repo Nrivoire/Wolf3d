@@ -6,7 +6,7 @@
 /*   By: nrivoire <nrivoire@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/11/02 17:50:39 by tprzybyl     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/17 19:15:35 by tprzybyl    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/10/29 14:55:36 by nrivoire    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -54,8 +54,8 @@ void		drawtexedline(t_xy src, t_xy dst, t_env *v, t_tex tex)
 		{
 			tex.y = ((src.y + i - src.y) / (dst.y - src.y) * TEXWIDTH);
 //			printf("1"),fflush(stdout);
-			SDL_GetRGBA(GetPixel(v->sur[tex.hit - 1], tex.x, tex.y),
-					v->sur[tex.hit - 1]->format, &col.r, &col.g, &col.b, &col.a);
+			SDL_GetRGBA(GetPixel(v->sur[0][tex.hit - 1], tex.x, tex.y),
+					v->sur[0][tex.hit - 1]->format, &col.r, &col.g, &col.b, &col.a);
 //			printf("3"),fflush(stdout);
 			SDL_SetRenderDrawColor(v->ren, col.r, col.g, col.b, col.a);
 //			printf("3"),fflush(stdout);
