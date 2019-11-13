@@ -6,7 +6,7 @@
 /*   By: nrivoire <nrivoire@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/07/29 04:56:43 by nrivoire     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/30 19:49:57 by tprzybyl    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/13 11:15:03 by nrivoire    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -17,16 +17,17 @@
 # define WIDTH 1000
 # define HEIGHT 700
 # define TEXWIDTH 128
-# define FIELDOFVIEW 45
+# define FIELDOFVIEW 60
 # define ANGLE 105
-# define ROTSPEED 1
-# define MOVESPEED .1
+# define ROTSPEED .2
+# define MOVESPEED 0.05
 
 # include "../libft/libft.h"
 # include <unistd.h>
 # include <math.h>
 # include <stdlib.h>
 # include <fcntl.h>
+# include <pthread.h>
 # include <SDL2/SDL.h>
 # include <SDL2/SDL_surface.h>
 # include <SDL2/SDL_video.h>
@@ -41,6 +42,8 @@ typedef struct		s_tex
 	int				x;
 	int				y;
 	int				hit;
+	int				ori;
+	double			dist;
 }					t_tex;
 
 typedef struct		s_ixy
@@ -85,18 +88,24 @@ typedef struct		s_lst
 
 typedef struct		s_env
 {
+	pthread_mutex_t	mutex;
 	SDL_Window		*win;
 	SDL_Renderer	*ren;
-	SDL_Surface		*sur[16][4];
+	SDL_Surface		*sur[9][4];
+	SDL_Surface		*sky;
 	t_pos			pos;
-	double			rad[360];
+	double			rad[1080];
 	int				row;
 	int				col;
 	int				**map;
+	double			fovmax;
+	double			fovmin;
 	double			rot_speed;
-	double			movespeed;
+	double			m_speed;
+	int				thread_index;
 	int				bool_cam;
 	int				inc;
+	int				key[SDL_NUM_SCANCODES];
 	t_lst			*lst;
 }					t_env;
 
@@ -110,6 +119,9 @@ void				assigntextures(t_env *v);
 void				mouse_button_event(SDL_Event event, t_env *v);
 void				mouse_motion_event(SDL_Event event, t_env *v);
 void				key_event(const Uint8 *keyboard_state, t_env *v);
+void				movement_side(const Uint8 *keyboard_state, t_env *v);
+void				movement_direction(const Uint8 *keyboard_state, t_env *v);
+void				set_mouse(t_env *v);
 /*-----------------------------WOLF3D------------------------------------*/
 /*--parsing--*/
 t_lst				*wolf3d_parsing(t_env *v, int fd);
@@ -118,10 +130,9 @@ void				map(t_env *v);
 /*--calculs--*/
 void				render(t_env *v);
 void				make_rad(t_env *v);
-void				render(t_env *v);
 
 /*--draw--*/
-void				drawtexedline(t_xy src, t_xy dst, t_env *v, t_tex tex);
+void				drawtexedline(t_xy src, t_xy dst, t_env v, t_tex tex);
 
 /*--display--*/
 void				display(t_env *v);

@@ -6,7 +6,7 @@
 /*   By: nrivoire <nrivoire@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/08 11:09:08 by nrivoire     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/30 16:06:56 by tprzybyl    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/07 21:13:31 by nrivoire    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -18,16 +18,19 @@ void			make_rad(t_env *v)
 	int			i;
 
 	i = -1;
-	while (++i <= 360)
-		v->rad[i] = i * (M_PI / 180);
+	while (++i <= 1080)
+	{
+		v->rad[i] = (i - 360) * (M_PI / 180);
+	}
 }
 
 void			init(t_env *v)
 {
+	pthread_mutex_init(&v->mutex, NULL);
 	v->pos.fov = FIELDOFVIEW;
 	v->pos.angle = ANGLE;
 	v->rot_speed = ROTSPEED;
-	v->movespeed = MOVESPEED;
+	v->m_speed = MOVESPEED;
 	v->pos.time = 0;
 	v->pos.oldtime = 0;
 	make_rad(v);
@@ -55,7 +58,8 @@ int				main(int av, char **ac)
 	map(v);
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 		ft_error("Couldn't initialize SDL");
-	v->win = SDL_CreateWindow("wolf3d", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WIDTH, HEIGHT, 0);
+	v->win = SDL_CreateWindow("wolf3d", SDL_WINDOWPOS_UNDEFINED,
+			SDL_WINDOWPOS_UNDEFINED, WIDTH, HEIGHT, 0);
 	if (v->win == NULL)
 		ft_error("Could not create the window");
 	v->ren = SDL_CreateRenderer(v->win, -1, SDL_RENDERER_SOFTWARE);

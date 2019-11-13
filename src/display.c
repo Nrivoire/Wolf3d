@@ -6,7 +6,7 @@
 /*   By: nrivoire <nrivoire@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/23 13:08:55 by nrivoire     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/30 15:59:32 by nrivoire    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/13 11:15:58 by nrivoire    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -15,57 +15,76 @@
 
 void			background(t_env *v)
 {
-	int			sky;
-	int			land;
+	int			y;
+	int			x;
+	int			color;
 
-	sky = -1;
-	while (++sky <= HEIGHT / 2)
+	color = 0;
+	y = HEIGHT/2;
+	while (--y >= 0)
 	{
-		land = -1;
-		while (++land <= WIDTH)
+		x = -1;
+		while (++x <= WIDTH)
 		{
-			SDL_RenderDrawPoint(v->ren, land, sky);
-			SDL_SetRenderDrawColor(v->ren, 140, 140, 140, 255);
+			SDL_RenderDrawPoint(v->ren, x, y);
+			SDL_SetRenderDrawColor(v->ren, color/10, color/1.2, color, 255);
 		}
+			if (y % 2 == 0  && color < 200)
+				color++;
 	}
-	sky = HEIGHT / 2;
-	while (++sky <= HEIGHT)
+	color = 0;
+	y = HEIGHT / 2;
+	while (++y <= HEIGHT)
 	{
-		land = -1;
-		while (++land <= WIDTH)
+		x = -1;
+		while (++x <= WIDTH)
 		{
-			SDL_RenderDrawPoint(v->ren, land, sky);
-			SDL_SetRenderDrawColor(v->ren, 179, 179, 179, 255);
+			SDL_RenderDrawPoint(v->ren, x, y);
+			SDL_SetRenderDrawColor(v->ren, color, color, color, 255);
 		}
+			if (y % 2 == 0 && color < 200)
+				color++;
 	}
+}
+
+void			close_sdl(t_env *v)
+{
+	SDL_DestroyRenderer(v->ren);
+	SDL_DestroyWindow(v->win);
+	SDL_Quit();
+}
+
+void			set_mouse(t_env *v)
+{
+	SDL_SetRelativeMouseMode(SDL_ENABLE);
+	SDL_WarpMouseInWindow(v->win, WIDTH / 2, HEIGHT / 2);
 }
 
 void			display(t_env *v)
 {
 	SDL_Event	event;
+	const Uint8	*keyboard_state;
 
-	SDL_SetRelativeMouseMode(SDL_ENABLE);
+	set_mouse(v);
 	while (1)
 	{
 		background(v);
-		if (SDL_PollEvent(&event))
+		while (SDL_PollEvent(&event))
 		{
-			const Uint8 *keyboard_state = SDL_GetKeyboardState(NULL);
+			keyboard_state = SDL_GetKeyboardState(NULL);
 			if (event.type == SDL_QUIT)
-				break;
+				break ;
 			if (event.type == SDL_KEYDOWN)
 				key_event(keyboard_state, v);
 			if (event.type == SDL_MOUSEBUTTONDOWN)
 				mouse_button_event(event, v);
 			if (event.type == SDL_MOUSEMOTION)
 				mouse_motion_event(event, v);
-			SDL_WarpMouseInWindow(v->win, WIDTH / 2, HEIGHT / 2);
-			//printf("Pos %f/%f \n", v->pos.pos.x, v->pos.pos.y);
-			render(v);
-			SDL_RenderPresent(v->ren);
 		}
+		movement_direction(keyboard_state, v);
+		movement_side(keyboard_state, v);
+		render(v);
+		SDL_RenderPresent(v->ren);
 	}
-	SDL_DestroyRenderer(v->ren);
-	SDL_DestroyWindow(v->win);
-	SDL_Quit();
+	close_sdl(v);
 }

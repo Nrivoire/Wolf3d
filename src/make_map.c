@@ -6,7 +6,7 @@
 /*   By: nrivoire <nrivoire@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/23 13:43:47 by nrivoire     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/30 15:58:16 by nrivoire    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/07 17:50:22 by nrivoire    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -90,4 +90,15 @@ void		map(t_env *v)
 		v->lst = v->lst->next;
 	}
 	outline(v, begin);
+	// int i = -1;
+	// register int j;
+	// while (++i < v->row + 2)
+	// {
+	// 	j = -1;
+	// 	while (++j < v->col + 2)
+	// 	{
+	// 		printf("%d ", v->map[i][j]);
+	// 	}
+	// 	printf("\n");
+	// }
 }

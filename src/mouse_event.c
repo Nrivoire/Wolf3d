@@ -6,7 +6,7 @@
 /*   By: nrivoire <nrivoire@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/08 11:29:22 by nrivoire     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/28 12:30:37 by nrivoire    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/07 18:45:05 by nrivoire    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -21,7 +21,9 @@ void		mouse_button_event(SDL_Event event, t_env *v)
 
 void		mouse_motion_event(SDL_Event event, t_env *v)
 {
-	if (v->bool_cam == 1)
+	if (v->bool_cam != 1)
+		SDL_SetRelativeMouseMode(SDL_DISABLE);
+	else
 	{
 		if (event.motion.xrel != 0)
 			v->pos.angle -= event.motion.xrel * v->rot_speed;
@@ -29,5 +31,6 @@ void		mouse_motion_event(SDL_Event event, t_env *v)
 			v->pos.angle = 0;
 		if (v->pos.angle < 0)
 			v->pos.angle = 360;
+		set_mouse(v);
 	}
 }

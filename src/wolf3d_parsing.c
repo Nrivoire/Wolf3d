@@ -6,7 +6,7 @@
 /*   By: nrivoire <nrivoire@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/08 13:56:01 by nrivoire     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/30 16:00:47 by nrivoire    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/07 18:43:59 by nrivoire    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -41,14 +41,20 @@ void			check_map(t_env *v, char *line)
 	while (line[i] != '\0')
 	{
 		nb_col++;
-		if ((line[i] >= '0' && line[i] <= '9') || \
-			(line[i] == '-' && line[i + 1] == '1') || line[i] == ' ')
-			i++;
+		if ((line[i] >= '0' && line[i] <= '9') || (line[i] == '-' && line[i + 1] == '1') || line[i] == ' ')
+		{
+			if ((ft_atoi(&line[i]) >= 0 && ft_atoi(&line[i]) <= 9) || (ft_atoi(&line[i]) == -1))
+				i++;
+			else
+				ft_error("The map is not valid.");
+		}
 		else
 			ft_error("The map is not valid.");
 	}
 	if (v->col == 0)
 		v->col = ft_count_map(line, ' ');
+	if (ft_count_map(line, ' ') != (size_t)v->col)
+		ft_error("Not a valid map. The map must be a rectangle.");
 }
 
 t_lst			*ft_lst_new(char *line, int line_size)
