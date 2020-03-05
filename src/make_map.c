@@ -6,14 +6,14 @@
 /*   By: nrivoire <nrivoire@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/23 13:43:47 by nrivoire     #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/07 17:50:22 by nrivoire    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/13 16:01:51 by nrivoire    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #include "../includes/wolf3d.h"
 
-void		free_tab(char **tab, int n)
+static void		free_tab(char **tab, int n)
 {
 	int		i;
 
@@ -23,7 +23,7 @@ void		free_tab(char **tab, int n)
 	free(tab);
 }
 
-void		make_map(int map_c, int map_r, char **s, t_env *v)
+static void		make_map(int map_c, int map_r, char **s, t_env *v)
 {
 	if (ft_atoi(s[++v->inc]) < 0)
 	{
@@ -37,7 +37,7 @@ void		make_map(int map_c, int map_r, char **s, t_env *v)
 		v->map[map_r][map_c] = ft_atoi(s[v->inc]);
 }
 
-void		lstdel(t_lst *lst)
+static void		lstdel(t_lst *lst)
 {
 	if (lst->next)
 		lstdel(lst->next);
@@ -45,7 +45,7 @@ void		lstdel(t_lst *lst)
 	free(lst);
 }
 
-void		outline(t_env *v, t_lst *begin)
+static void		outline(t_env *v, t_lst *begin)
 {
 	if (v->pos.pos.y == -1 && v->pos.pos.y == -1)
 		ft_error("There should be at least one -1 in the map.");
@@ -64,7 +64,7 @@ void		outline(t_env *v, t_lst *begin)
 	}
 }
 
-void		map(t_env *v)
+void			map(t_env *v)
 {
 	t_lst	*begin;
 	int		map_r;
@@ -90,15 +90,4 @@ void		map(t_env *v)
 		v->lst = v->lst->next;
 	}
 	outline(v, begin);
-	// int i = -1;
-	// register int j;
-	// while (++i < v->row + 2)
-	// {
-	// 	j = -1;
-	// 	while (++j < v->col + 2)
-	// 	{
-	// 		printf("%d ", v->map[i][j]);
-	// 	}
-	// 	printf("\n");
-	// }
 }

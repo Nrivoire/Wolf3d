@@ -6,14 +6,14 @@
 /*   By: nrivoire <nrivoire@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/23 13:06:17 by nrivoire     #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/13 11:14:31 by nrivoire    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/15 18:49:04 by tprzybyl    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #include "../includes/wolf3d.h"
 
-int				dtoi(double dbl)
+static int		dtoi(float dbl)
 {
 	int	ret;
 
@@ -23,8 +23,8 @@ int				dtoi(double dbl)
 
 void			movement_direction(const Uint8 *keyboard_state, t_env *v)
 {
-	double		co;
-	double		si;
+	float		co;
+	float		si;
 
 	co = cos(v->rad[v->pos.angle]);
 	si = sin(v->rad[v->pos.angle]);
@@ -46,8 +46,8 @@ void			movement_direction(const Uint8 *keyboard_state, t_env *v)
 
 void			movement_side(const Uint8 *keyboard_state, t_env *v)
 {
-	double		co;
-	double		si;
+	float		co;
+	float		si;
 
 	co = cos(v->rad[v->pos.angle]);
 	si = sin(v->rad[v->pos.angle]);
@@ -67,12 +67,13 @@ void			movement_side(const Uint8 *keyboard_state, t_env *v)
 	}
 }
 
-void			key_event(const Uint8 *keyboard_state, t_env *v)
+int				key_event(const Uint8 *keyboard_state, t_env *v)
 {
 	if (keyboard_state[SDL_SCANCODE_LSHIFT])
-		v->m_speed = MOVESPEED * 2;
+		v->m_speed = fabs(MOVESPEED) * 2;
 	else
-		v->m_speed = MOVESPEED;
+		v->m_speed = fabs(MOVESPEED);
 	if (keyboard_state[SDL_SCANCODE_ESCAPE])
-		ft_error(NULL);
+		return (1);
+	return (0);
 }

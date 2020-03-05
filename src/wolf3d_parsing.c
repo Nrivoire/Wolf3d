@@ -6,7 +6,7 @@
 /*   By: nrivoire <nrivoire@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/08 13:56:01 by nrivoire     #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/07 18:43:59 by nrivoire    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/13 16:02:51 by nrivoire    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -31,7 +31,7 @@ static size_t	ft_count_map(char const *s, char c)
 	return (j);
 }
 
-void			check_map(t_env *v, char *line)
+static void		check_map(t_env *v, char *line)
 {
 	int			i;
 	int			nb_col;
@@ -41,9 +41,11 @@ void			check_map(t_env *v, char *line)
 	while (line[i] != '\0')
 	{
 		nb_col++;
-		if ((line[i] >= '0' && line[i] <= '9') || (line[i] == '-' && line[i + 1] == '1') || line[i] == ' ')
+		if ((line[i] >= '0' && line[i] <= '9') || (line[i] == '-' &&
+				line[i + 1] == '1') || line[i] == ' ')
 		{
-			if ((ft_atoi(&line[i]) >= 0 && ft_atoi(&line[i]) <= 9) || (ft_atoi(&line[i]) == -1))
+			if ((ft_atoi(&line[i]) >= 0 && ft_atoi(&line[i]) <= 9) ||
+					(ft_atoi(&line[i]) == -1))
 				i++;
 			else
 				ft_error("The map is not valid.");
@@ -57,7 +59,7 @@ void			check_map(t_env *v, char *line)
 		ft_error("Not a valid map. The map must be a rectangle.");
 }
 
-t_lst			*ft_lst_new(char *line, int line_size)
+static t_lst	*ft_lst_new(char *line, int line_size)
 {
 	t_lst		*elem;
 
@@ -74,7 +76,7 @@ t_lst			*ft_lst_new(char *line, int line_size)
 	return (elem);
 }
 
-void			add_elem(t_lst **elem, char *line, int line_size)
+static void		add_elem(t_lst **elem, char *line, int line_size)
 {
 	t_lst		*new;
 	t_lst		*tmp;

@@ -6,7 +6,7 @@
 #    By: nrivoire <nrivoire@student.le-101.fr>      +:+   +:    +:    +:+      #
 #                                                  #+#   #+    #+    #+#       #
 #    Created: 2019/06/14 18:19:22 by nrivoire     #+#   ##    ##    #+#        #
-#    Updated: 2019/10/30 15:47:15 by nrivoire    ###    #+. /#+    ###.fr      #
+#    Updated: 2019/11/15 18:23:20 by nrivoire    ###    #+. /#+    ###.fr      #
 #                                                          /                   #
 #                                                         /                    #
 # **************************************************************************** #
@@ -38,13 +38,16 @@ INC_NAME = wolf3d.h
 INC = $(addprefix $(INC_PATH)/,$(INC_NAME))
 
 CPPFLAGS = -I $(INC_PATH)
-LDFLAGS = -O3 -lpthread -L libft -g3 #-fsanitize=address
+LDFLAGS = -O3 -lpthread -L libft
 LDLIBS = -lft
-SDL =  -lft -F /Library/Frameworks/ -framework SDL2
+
+#	SDL
+SDL = -lft -F /Library/Frameworks/ -L sdl2/2.0.10/lib/ -lSDL2 -L sdl2_image/2.0.5/lib/ -lSDL2_image
+PATH_TO_SDL = ./
 
 #	Compiler
 CC = clang
-CFLAGS = -Wall -Wextra -g3 #-fsanitize=address
+CFLAGS = -Wall -Wextra
 
 ################
 ##   COLORS   ##
@@ -73,8 +76,11 @@ SUR=$ \x1b[7m
 # $^ -> représente tout ce qui est apres le :
 # $< -> nom de la dependance
 
+	#@[ -d sdl2 ] && echo "SDL2 exist" || echo "SDL2 does not exist"
+	#@[ -d sdl2_image ] && echo "SDL2_image exist" || echo "SDL2_image does not exist"
+
 # empêche le Makefile de confondre un fichier et une règle en cas de même nom
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re sdl
 
 all: libft.a $(NAME)
 	@printf "$(BLUE)> $(NAME) : $(YELLOW)Project ready !$(END)\n"
@@ -86,6 +92,12 @@ $(NAME): $(OBJ)
 libft.a:
 	@make -C ./libft/
 
+sdl:
+	brew update && brew reinstall sdl2 sdl2_image
+	cp -R ~/.brew/Cellar/sdl2 ./
+	cp -R ~/.brew/Cellar/sdl2_image ./ 
+	cp sdl/SDL_image.h sdl2_image/2.0.5/include/SDL2/SDL_image.h
+
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c $(INC)
 	@mkdir -p $(OBJ_PATH)
 	@mkdir -p $(OBJ_PATH)/$(SRC_SUP)
@@ -95,14 +107,16 @@ $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c $(INC)
 clean:
 	@make -C libft clean
 	@rm -rf $(OBJ_PATH)
+	@rm -rf sdl2 sdl2_image
 	@printf "$(BLUE)> Deleted : $(RED)$(OBJ_PATH)$(END)\n"
 
 fclean: clean
 	@make -C libft fclean
 	@rm -rf $(NAME)
+	@rm -rf sdl2 sdl2_image
 	@printf "$(BLUE)> Deleted : $(RED)$(NAME)$(END)\n"
 
-re: fclean all
+re: fclean sdl all
 
 norme:
 	norminette $(SRC_PATH) $(INC_PATH)

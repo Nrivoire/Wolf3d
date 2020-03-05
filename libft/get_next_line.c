@@ -6,7 +6,7 @@
 /*   By: nrivoire <nrivoire@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/11/27 13:27:22 by nrivoire     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/29 15:38:45 by nrivoire    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/15 18:39:08 by tprzybyl    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -50,8 +50,6 @@ static char			*ft_find_line(char *tmp)
 		ft_error("The map need an EOF");
 	if (len_n < (int)ft_strlen(tmp) || tmp != NULL)
 		lf_ov = ft_strsub(tmp, len_n + 1, lenght);
-	//else if (lf_ov)
-	//	ft_strdel(&lf_ov);
 	ft_strdel(&tmp);
 	return (line);
 }
@@ -61,7 +59,7 @@ static int			ft_return(char *line, int ret)
 	if (ret == -1)
 	{
 		free(&line);
-		ft_error("get_next_line error");
+		ft_error("The map is not valid.");
 		return (-1);
 	}
 	return (0);
@@ -75,7 +73,7 @@ int					get_next_line(const int fd, char **line)
 
 	if (fd < 0 || line == NULL || BUFF_SIZE < 1 || read(fd, buff, 0) == -1)
 	{
-		ft_error("get_next_line error");
+		ft_error("The map is not valid.");
 		return (-1);
 	}
 	*line = ft_strnew(BUFF_SIZE);
